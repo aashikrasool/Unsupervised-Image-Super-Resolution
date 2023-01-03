@@ -33,13 +33,28 @@ laplacian12 = cv2.subtract(first_layer, expand_image_second_l)
 #laplacian 2
 laplacian21 = cv2.subtract(input_img2, expand_image_first_l2)
 laplacian22 = cv2.subtract(first_layer2, expand_image_second_l2)
+#if in case to ccheck the size of images
+#but this dataset has same size images(384,384)
+#print(laplacian22.shape)
 
-cv2.imshow("lap2",laplacian21)
+final_lap1= cv2.add(laplacian11,laplacian21)
+final_lap2 =cv2.add(laplacian12,laplacian22)
+#we need this image to reconstruct  the image
+final_gauss=  cv2.add(second_layer,second_layer2)
+
+#to reconstruct image
+reconstruct1=cv2.pyrUp()
+
+
+
+
+cv2.imshow("second",final_gauss)
+
 
 #display expanded img
 # cv2.imshow("exp1",expand_image_first_l)
 
-
+#
 
 #to display  images
 #cv2.imshow("first downsampled",first_layer)
