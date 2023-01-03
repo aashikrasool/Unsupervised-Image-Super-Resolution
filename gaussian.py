@@ -1,7 +1,13 @@
 #first we will design gaussian pyramid
 import cv2
 import numpy as np
+import os
+
+project_root = os.getcwd()
+dir_dataset = os.path.join(project_root, "HR")
+
 input_img1 = cv2.imread("C:\\Users\\aashi\\Unsupervised-Image-Super-Resolution\\HR\\0.png")
+input_img2 = cv2.imread
 
 #downsampled  output1
 first_layer= cv2.pyrDown(input_img1)
