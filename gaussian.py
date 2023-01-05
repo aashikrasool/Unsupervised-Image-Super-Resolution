@@ -5,9 +5,9 @@ import os
 
 project_root = os.getcwd()
 dir_dataset = os.path.join(project_root, "HR")
-
-input_img1 = cv2.imread("C:\\Users\\aashi\\Unsupervised-Image-Super-Resolution\\HR\\0.png")
-input_img2 = cv2.imread("C:\\Users\\aashi\\Unsupervised-Image-Super-Resolution\\HR\\17.png")
+file_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
+input_img1 = cv2.imread(file_img[1], 1)
+input_img2 = cv2.imread(file_img[6], 1)
 
 #downsampled  output1
 first_layer= cv2.pyrDown(input_img1)
@@ -42,14 +42,18 @@ final_lap2 =cv2.add(laplacian12,laplacian22)
 #we need this image to reconstruct  the image
 final_gauss=  cv2.add(second_layer,second_layer2)
 
-#to reconstruct image
-reconstruct1=cv2.pyrUp()
+# #to reconstruct image
+reconstruct1=cv2.pyrUp(laplacian11)
+reconstruct2=cv2.pyrUp(laplacian12)
+reconstruct3= cv2.pyrUp(laplacian21)
+reconstruct4 = cv2.pyrUp(laplacian22)
+
+reconstruct = [reconstruct1, reconstruct2, reconstruct3,reconstruct4]
+#laplacian
 
 
-
-
-cv2.imshow("second",final_gauss)
-
+cv2.imshow("second",reconstruct4)
+cv2.imshow("second",reconstruct3)
 
 #display expanded img
 # cv2.imshow("exp1",expand_image_first_l)
