@@ -6,8 +6,8 @@ import os
 project_root = os.getcwd()
 dir_dataset = os.path.join(project_root, "HR")
 file_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
-input_img1 = cv2.imread(file_img[1], 1)
-input_img2 = cv2.imread(file_img[6], 1)
+input_img1 = cv2.imread(file_img[0], 1)
+input_img2 = cv2.imread(file_img[8], 1)
 
 #downsampled  output1
 first_layer= cv2.pyrDown(input_img1)
@@ -16,6 +16,9 @@ second_layer= cv2.pyrDown(first_layer)
 #for 2 image
 first_layer2 = cv2.pyrDown(input_img2)
 second_layer2= cv2.pyrDown(first_layer2)
+
+#combination
+comb= cv2.add(input_img1, input_img2)
 
 #laplacian pyramid
 #expanding image
@@ -43,17 +46,18 @@ final_lap2 =cv2.add(laplacian12,laplacian22)
 final_gauss=  cv2.add(second_layer,second_layer2)
 
 # #to reconstruct image
-reconstruct1=cv2.pyrUp(laplacian11)
-reconstruct2=cv2.pyrUp(laplacian12)
-reconstruct3= cv2.pyrUp(laplacian21)
-reconstruct4 = cv2.pyrUp(laplacian22)
+reconstruct1=cv2.pyrUp(final_lap1)
+reconstruct2=cv2.pyrUp(final_lap2)
 
-reconstruct = [reconstruct1, reconstruct2, reconstruct3,reconstruct4]
-#laplacian
+reconstruct = [reconstruct1, reconstruct2]
 
+laplacian = [final_lap1,final_lap2]
 
-cv2.imshow("second",reconstruct4)
-cv2.imshow("second",reconstruct3)
+reconstruct_image1 = cv2.add(reconstruct2, final_lap1)
+print(input_img2.shape)
+final_comb=cv2.add(reconstruct_image1, comb,reconstruct2)
+cv2.imshow("action1 final img",final_comb)
+# cv2.imshow("seco",final_lap2)
 
 #display expanded img
 # cv2.imshow("exp1",expand_image_first_l)
