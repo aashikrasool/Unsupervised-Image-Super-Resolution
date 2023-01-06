@@ -4,10 +4,10 @@ import numpy as np
 import os
 
 project_root = os.getcwd()
-dir_dataset = os.path.join(project_root, "HR")
+dir_dataset = os.path.join(project_root, "input_img_action1")
 file_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
 input_img1 = cv2.imread(file_img[0], 1)
-input_img2 = cv2.imread(file_img[8], 1)
+input_img2 = cv2.imread(file_img[1], 1)
 
 #downsampled  output1
 first_layer= cv2.pyrDown(input_img1)
@@ -55,7 +55,8 @@ laplacian = [final_lap1,final_lap2]
 
 reconstruct_image1 = cv2.add(reconstruct2, final_lap1)
 print(input_img2.shape)
-final_comb=cv2.add(reconstruct_image1, comb,reconstruct2)
+final_comb=cv2.add( comb,reconstruct2)
+cv2.imwrite('action_1_output/1.png',final_comb)
 cv2.imshow("action1 final img",final_comb)
 # cv2.imshow("seco",final_lap2)
 

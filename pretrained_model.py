@@ -14,6 +14,7 @@ files_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
 img = cv2.imread(files_img[8], 1)
 window_name = 'image sample'
 cv2.imshow(window_name,img)
+
 # waits for user to press any key
 # (this is necessary to avoid Python kernel form crashing)
 cv2.waitKey(0)
@@ -82,6 +83,9 @@ def plot_images(images, titles):
     plt.show()
 
 img_small_resize = cv2.resize(img_small, (img.shape[0], img.shape[1]))
+cv2.imwrite('output/image_edsr.png',img_upscaled1)
+cv2.imwrite('output/image_espcn.png',img_upscaled2)
+cv2.imwrite('output/image_fsrcnn.png',img_upscaled3)
 
 titles = ["original", "downsampled", "edsr", "espcn", "fsrcnn", "lapsrn"]
 images = [img, img_small_resize, img_upscaled1, img_upscaled2, img_upscaled3, img_upscaled4]
