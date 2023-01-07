@@ -18,7 +18,7 @@ first_layer2 = cv2.pyrDown(input_img2)
 second_layer2= cv2.pyrDown(first_layer2)
 
 #combination
-comb= cv2.add(input_img1, input_img2)
+comb= cv2.addWeighted(input_img1,0.3, input_img2,0.7, 0.0)
 
 #laplacian pyramid
 #expanding image
@@ -55,10 +55,11 @@ laplacian = [final_lap1,final_lap2]
 
 reconstruct_image1 = cv2.add(reconstruct2, final_lap1)
 print(input_img2.shape)
-final_comb=cv2.add( comb,reconstruct2)
-cv2.imwrite('action_1_output/1.png',final_comb)
-cv2.imshow("action1 final img",final_comb)
-# cv2.imshow("seco",final_lap2)
+#final_comb=cv2.add( comb,reconstruct2)
+cv2.imwrite('action_1_output/weighted3.png',comb)
+#cv2.imshow("action1 final img",final_comb)
+cv2.imshow("comb",comb)
+
 
 #display expanded img
 # cv2.imshow("exp1",expand_image_first_l)
