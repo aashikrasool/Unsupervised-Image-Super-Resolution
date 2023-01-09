@@ -86,6 +86,7 @@ img_small_resize = cv2.resize(img_small, (img.shape[0], img.shape[1]))
 cv2.imwrite('output/image_edsr.png',img_upscaled1)
 cv2.imwrite('output/image_espcn.png',img_upscaled2)
 cv2.imwrite('output/image_fsrcnn.png',img_upscaled3)
+cv2.imwrite('output/image_lapsrn.png',img_upscaled4)
 
 titles = ["original", "downsampled", "edsr", "espcn", "fsrcnn", "lapsrn"]
 images = [img, img_small_resize, img_upscaled1, img_upscaled2, img_upscaled3, img_upscaled4]

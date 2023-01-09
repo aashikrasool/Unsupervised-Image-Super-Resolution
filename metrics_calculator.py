@@ -7,13 +7,14 @@ from skimage.metrics import structural_similarity as ssim
 # dir_dataset = os.path.join(project_root, "HR")
 # files_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
 
-img1 = cv2.imread('action_1_output/weighted4.png')
+img1 = cv2.imread('action_1_output/weighted32.png')
 img2 = cv2.imread('HR/16.png')
 
 def psnr(img1,img2):
     psnr = cv2.PSNR(img1, img2)
     psnr=print("PSNR :",psnr)
     return psnr
+
 def mse(img1, img2):
    heigt=384
    width=384
@@ -33,6 +34,8 @@ def mse(img1, img2):
 #     # return the MSE, the lower the error, the more "similar"
 #     # the two images are
 #     return err
+
+
 def ssim(img1, img2):
     C1 = (0.01 * 255)**2
     C2 = (0.03 * 255)**2
@@ -55,12 +58,13 @@ def ssim(img1, img2):
                                                             (sigma1_sq + sigma2_sq + C2))
     ssim_map=print("SSIM :",ssim_map.mean())
     return ssim
+
+
 # def ssim(imag1,img2):
 #     ysim= ssim(imag1,img2)
 #     sim=print("SSIM: ",ysim)
 #     return sim
 #
-
 
 
 mse(img1,img2)
