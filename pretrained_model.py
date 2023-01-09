@@ -94,7 +94,7 @@ def save_img(img1,img2,img3,img4):
     cv2.imwrite('output/image_lapsrn.png', img4)
     msg= print("pretrained model output were saved")
     return msg
-
+(img_upscaled1,img_upscaled2,img_upscaled3,img_upscaled4)=design_upscale(img_small)
 save_img(img_upscaled1,img_upscaled2,img_upscaled3,img_upscaled4)
 titles = ["original", "downsampled", "edsr", "espcn", "fsrcnn", "lapsrn"]
 images = [img, img_small_resize, img_upscaled1, img_upscaled2, img_upscaled3, img_upscaled4]
