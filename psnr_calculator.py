@@ -1,6 +1,8 @@
 import cv2
 import os
 import numpy as np
+from skimage.measure import compare_ssim
+
 # project_root = os.getcwd()
 # dir_dataset = os.path.join(project_root, "HR")
 # files_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
@@ -25,8 +27,19 @@ def mse(imageA, imageB):
     # the two images are
     return err
 
+def ssim(imag1,img2):
+    grayA = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+    grayB = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+    (score, diff) = compare_ssim(grayA, grayB, full=True)
+    diff = (diff * 255).astype("uint8")
+    sim=print("SSIM: {}".format(score))
+    return sim
+
+
+
 
 mse(img1,img2)
 psnr(img1,img2)
+ssim(img1,img2)
 
 # print(psnr)
