@@ -8,6 +8,7 @@ from utilities.gaussian import *
 from utilities.metrics_calculator import *
 from utilities.helpers import *
 from argparse import ArgumentParser
+from actions.action_one import *
 
 # Main pipeline file
 
@@ -45,14 +46,26 @@ dir_pretrained_models = config['model_dir']
 os.listdir(dir_pretrained_models)
 
 
+# downsample an image and get the original image, feed to the network and get output
+
+
+
 img, img_small = downsample(files_img[8], scale=0.25)
 print(img.shape, img_small.shape)
 
 
 img_small_resize = cv2.resize(img_small, (img.shape[0], img.shape[1]))
 
-(img_upscaled1,img_upscaled2,img_upscaled3,img_upscaled4,img_upscaled5)=design_upscale(img_small,config)
-save_img(img_upscaled1,img_upscaled2,img_upscaled3,img_upscaled4,img_upscaled5)
+out_imgs = design_upscale(img_small,config)
+save_img(out_imgs)
+
 titles = ["original", "downsampled", "edsr", "espcn", "fsrcnn", "lapsrn"]
-images = [img, img_small_resize, img_upscaled1, img_upscaled2, img_upscaled3, img_upscaled4]
+images = [img, img_small_resize, out_imgs['edsr_out'], out_imgs['espcn_out'], out_imgs['fsrcnn_out'], out_imgs['lapsrn_out']]
 plot_images(images, titles)
+
+
+
+
+#action 1
+img = cv2.imread(files_img[8], 1)
+#sample_action1(img, config)

@@ -1,7 +1,8 @@
 import os
 import cv2
 import numpy as np
-
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import ImageGrid
 
 def showSampleImage(img_path, window_name='sample image'):
     img = cv2.imread(img_path, 1)
@@ -34,10 +35,12 @@ def design_upscale(img_small,config):
     img_upscaled2 = get_upscaled_images(img_small, config['espcn_model'], "espcn", 4)
     img_upscaled3 = get_upscaled_images(img_small, config['fsrcnn_model'], "fsrcnn", 4)
     img_upscaled4 = get_upscaled_images(img_small, config['lapsrn_model'], "lapsrn", 4)
-    img_upscaled5 = get_upscaled_images(img_small, config['weighted_model'], "sr", 4)
+    #img_upscaled5 = get_upscaled_images(img_small, config['weighted_model'], "sr", 4)
+
+    model_out ={"edsr_out":img_upscaled1, "espcn_out":img_upscaled2, "fsrcnn_out": img_upscaled3, "lapsrn_out":img_upscaled4}
 
     shape= print(img_upscaled1.shape, img_upscaled2.shape, img_upscaled3.shape, img_upscaled4.shape)
-    return img_upscaled1,img_upscaled2,img_upscaled3,img_upscaled4,img_upscaled5
+    return model_out
 
 
 
@@ -54,11 +57,11 @@ def plot_images(images, titles):
     plt.show()
 
 
-def save_img(img1,img2,img3,img4,img5):
-    cv2.imwrite('output/image_edsr.png', img1)
-    cv2.imwrite('output/image_espcn.png', img2)
-    cv2.imwrite('output/image_fsrcnn.png', img3)
-    cv2.imwrite('output/image_lapsrn.png', img4)
-    cv2.imwrite('output/image_sr.png', img5)
+def save_img(out):
+    cv2.imwrite('output/image_edsr.png', out['edsr_out'])
+    cv2.imwrite('output/image_espcn.png', out['espcn_out'])
+    cv2.imwrite('output/image_fsrcnn.png', out['fsrcnn_out'])
+    cv2.imwrite('output/image_lapsrn.png', out['lapsrn_out'])
+    #cv2.imwrite('output/image_sr.png', img5)
     msg= print("pretrained model output were saved")
     return msg

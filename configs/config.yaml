@@ -9,3 +9,9 @@ espcn_model: ./pretrained_models/ESPCN_x4.pb
 lapsrn_model: ./pretrained_models/LapSRN_x4.pb
 #custom_model
 weighted_model: ./pretrained_models/weights-wdsr-b-32-x4.pd
+
+#input images
+
+#action
+input_dir: ./input/
+action1_input: ./input/action1/
