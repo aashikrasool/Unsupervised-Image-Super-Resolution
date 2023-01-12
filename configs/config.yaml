@@ -1,0 +1,11 @@
+# Paths
+output_dir: ./output/
+data_dir: ./HR/
+model_dir: ./pretrained_models/
+#pretrained_models
+edsr_model: ./pretrained_models/EDSR_x4.pb
+fsrcnn_model: ./pretrained_models/FSRCNN_x4.pb
+espcn_model: ./pretrained_models/ESPCN_x4.pb
+lapsrn_model: ./pretrained_models/LapSRN_x4.pb
+#custom_model
+weighted_model: ./pretrained_models/weights-wdsr-b-32-x4.pd

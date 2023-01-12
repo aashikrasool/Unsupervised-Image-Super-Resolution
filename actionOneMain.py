@@ -1,4 +1,4 @@
-from gaussian import *
+from utilities.gaussfsian import *
 from pretrained_model import *
 import cv2
 import os
