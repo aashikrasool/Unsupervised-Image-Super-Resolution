@@ -10,7 +10,7 @@ from math import log10, sqrt
 # dir_dataset = os.path.join(project_root, "HR")
 # files_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
 
-img2 = cv2.imread('action_1_output/weighted32.png')
+img2 = cv2.imread('output/action_1_output/weighted32.png')
 img1 = cv2.imread('HR/16.png')
 
 def per_matrix(img1,img2):
