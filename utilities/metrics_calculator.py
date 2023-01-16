@@ -10,8 +10,8 @@ from math import log10, sqrt
 # dir_dataset = os.path.join(project_root, "HR")
 # files_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
 
-img2 = cv2.imread('output/action_1_output/weighted32.png')
-img1 = cv2.imread('HR/16.png')
+img2 = cv2.imread('D:\\research_pycharm\\reisr\\Unsupervised-Image-Super-Resolution\\output\\action2_output\\converted\\new_image.png')
+img1 = cv2.imread('HR/8.png')
 
 def per_matrix(img1,img2):
     #MSE

@@ -12,7 +12,7 @@ def resize(im,new_width):
   return resized_Image
 
 from IPython.core import extensions
-files= os.listdir("D:\\research_pycharm\\reisr\\Unsupervised-Image-Super-Resolution\\HR")
+files= os.listdir(train_dir)
 extensions= ['jpg','jpeg','png','gif','.png']
 for file in files:
   ext= file.split(".")[-1]
