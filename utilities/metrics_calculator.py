@@ -5,6 +5,8 @@ import numpy as np
 from skimage.metrics import structural_similarity
 from skimage.metrics import structural_similarity as ssim
 from math import log10, sqrt
+import cv2
+import tensorflow as tf
 
 # project_root = os.getcwd()
 # dir_dataset = os.path.join(project_root, "HR")
@@ -42,6 +44,12 @@ def ssim(imag1,img2):
     ssim= print("ssim:", score)
     return ssim
 
+def psnr_calc(img,org_image):
+    psnr = tf.image.psnr(
+        tf.clip_by_value(img, 0, 255),
+        tf.clip_by_value(org_image, 0, 255), max_val=255)
+    msg=print("PSNR Achieved: %f" % psnr)
+    return msg
 
 # def mse(imageA, imageB):
 #     # the 'Mean Squared Error' between the two images is the
