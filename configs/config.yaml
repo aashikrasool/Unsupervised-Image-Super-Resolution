@@ -15,3 +15,6 @@ weighted_model: ./pretrained_models/weights-wdsr-b-32-x4.pd
 #action
 input_dir: ./input/
 action1_input: ./input/action1/
+
+#input images
+action2_out : ./output/action2_output/
