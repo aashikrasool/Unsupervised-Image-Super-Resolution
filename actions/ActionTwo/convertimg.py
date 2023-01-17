@@ -6,3 +6,7 @@ psnr = tf.image.psnr(
     tf.clip_by_value(img, 0, 255),
     tf.clip_by_value(org_image, 0, 255), max_val=255)
 print("PSNR Achieved: %f" % psnr)
+# Above are just for checking
+# print(cv2.imshow("comb",img))
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
