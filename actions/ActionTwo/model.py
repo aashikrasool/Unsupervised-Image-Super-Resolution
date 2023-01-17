@@ -9,7 +9,7 @@ from PIL import Image
 import tensorflow as tf
 import tensorflow_hub as hub
 import cv2
-
+from convert import *
 
 os.environ['TFHUB_DOWNLOAD_PROGRESS'] = 'True'
 SAVED_MODEL_PATH = "https://tfhub.dev/captain-pool/esrgan-tf2/1"
@@ -34,6 +34,16 @@ def preprocess_image(image_path):
 load_image = preprocess_image(IMAGE_PATH)
 
 super_image = model(load_image)
+# super_image = tf.squeeze(super_image)
+# super_image = np.asarray(super_image)
+# super_image = tf.clip_by_value(super_image, 0, 255)
+# super_image= Image.fromarray(tf.cast(super_image, tf.uint8).numpy())
+# cv2.imwrite('action2_output/weighted3 super_image)
+
+# print(super_image.shape)
+
+
+
 
 # plot_image(tf.squeeze(super_image),'Super Resolution')
 image=np.asarray(super_image)
@@ -52,3 +62,11 @@ resized_image = cv2.resize(image, new_size, interpolation = cv2.INTER_LINEAR)
 cv2.imwrite(file_path, resized_image)
 
 
+
+
+# img= np.array(img)
+cv2.imwrite(file_path,img)
+
+# file_n="/content/drive/MyDrive/Dataset/SR"
+#cv2.imwrite('/content/drive/MyDrive/Dataset/SR',image)
+# # image = Image.fromarray(tf.cast(image, tf.uint8).numpy())
