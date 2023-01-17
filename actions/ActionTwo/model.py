@@ -65,7 +65,7 @@ cv2.imwrite(file_path, resized_image)
 
 
 # img= np.array(img)
-cv2.imwrite(file_path,img)
+#cv2.imwrite(file_path,img)
 
 # file_n="/content/drive/MyDrive/Dataset/SR"
 #cv2.imwrite('/content/drive/MyDrive/Dataset/SR',image)
