@@ -4,7 +4,7 @@ import numpy as np
 import os
 from utilities.manage_config import get_config
 
-config = get_config("./configs/config.yaml")
+config = get_config("../configs/config.yaml")
 project_root = os.getcwd()
 dir_dataset = config['action1_input']
 

@@ -10,10 +10,10 @@ dir_dataset = config['action1_input']
 file_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
 input_img1 = cv2.imread(file_img[2], 1)
 input_img2 = cv2.imread(file_img[3], 1)
-def comb_img(img1,img2):
+def action3(img1,img2):
     comb = cv2.addWeighted(img1, 0.6,img2, 0.4, 0.0)
     cv2.imwrite('action_1_output/action3.png', comb)
     comb=print(cv2.imshow("comb",comb))
     return comb
-comb_img(img2,img1)
+action3(img2,img1)
 
