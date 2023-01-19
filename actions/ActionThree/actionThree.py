@@ -5,7 +5,7 @@ from utilities.manage_config import get_config
 
 config = get_config("./configs/config.yaml")
 project_root = os.getcwd()
-dir_dataset = config['action1_input']
+dir_dataset = config['input/action3']
 
 file_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
 input_img1 = cv2.imread(file_img[2], 1)
