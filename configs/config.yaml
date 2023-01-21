@@ -8,13 +8,13 @@ fsrcnn_model: ./pretrained_models/FSRCNN_x4.pb
 espcn_model: ./pretrained_models/ESPCN_x4.pb
 lapsrn_model: ./pretrained_models/LapSRN_x4.pb
 #custom_model
-weighted_model: ./pretrained_models/weights-wdsr-b-32-x4.pd
+#weighted_model: ./pretrained_models/weights-wdsr-b-32-x4.pd
 
 #input images
 
 #action
 input_dir: ./input/
 action1_input: ./input/action1/
-
+action3_input: ./input/action1/
 #input images
 action2_out : ./output/action2_output/

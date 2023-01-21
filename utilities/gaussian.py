@@ -4,14 +4,14 @@ import numpy as np
 import os
 from utilities.manage_config import get_config
 
-config = get_config("./configs/config.yaml")
-project_root = os.getcwd()
-dir_dataset = config['action1_input']
-
-file_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
-input_img1 = cv2.imread(file_img[0], 1)
-input_img2 = cv2.imread(file_img[1], 1)
-#input_img3= cv2.imread(file_img[2],1)
+# config = get_config("/configs/config.yaml")
+# project_root = os.getcwd()
+# dir_dataset = config['action1_input']
+#
+# file_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
+# input_img1 = cv2.imread(file_img[0], 1)
+# input_img2 = cv2.imread(file_img[1], 1)
+# #input_img3= cv2.imread(file_img[2],1)
 
 def comb_img(img1,img2):
     comb = cv2.addWeighted(img1, 0.6,img2, 0.4, 0.0)
@@ -90,7 +90,7 @@ def comb_img(img1,img2):
 # #cv2.imshow("first downsampled",first_layer)
 # #cv2.imshow("second downsampled",second_layer)
 # # cv2.imshow("Ground Truth",input_img1)
-
-comb_img(input_img1,input_img2)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#
+# comb_img(input_img1,input_img2)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()

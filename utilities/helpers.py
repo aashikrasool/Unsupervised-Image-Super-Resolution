@@ -58,10 +58,10 @@ def plot_images(images, titles):
 
 
 def save_img(out):
-    cv2.imwrite('output/image_edsr.png', out['edsr_out'])
-    cv2.imwrite('output/image_espcn.png', out['espcn_out'])
-    cv2.imwrite('output/image_fsrcnn.png', out['fsrcnn_out'])
-    cv2.imwrite('output/image_lapsrn.png', out['lapsrn_out'])
+    cv2.imwrite('input/action1/image_edsr.png', out['edsr_out'])
+    cv2.imwrite('input/action1/image_espcn.png', out['espcn_out'])
+    cv2.imwrite('input/action3/image_fsrcnn.png', out['fsrcnn_out'])
+    cv2.imwrite('input/action3/image_lapsrn.png', out['lapsrn_out'])
     #cv2.imwrite('output/image_sr.png', img5)
     msg= print("pretrained model output were saved")
     return msg
