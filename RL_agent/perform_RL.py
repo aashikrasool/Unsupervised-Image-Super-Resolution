@@ -13,6 +13,9 @@ import torch
 actions = [1, 2, 3, 4, 5, 6]
 
 
+
+
+
 def perform_action(image, action):
     # Perform the action
     if action == 1:
@@ -40,25 +43,52 @@ def load_image():
 
 # Define the environment
 class ImageEnv(gym.Env):
-    def __init__(self):
-        self.action_space = gym.spaces.Discrete(len(actions))
-        self.observation_space = gym.spaces.Box(0, 255, (384, 384, 3), dtype=np.uint8)
-        self.current_image = None
+    def __init__(self, input_size=(384, 384, 3), time_stamp=5):
+        self.input_size = input_size
+        self.models = {
+            0: self._create_edsr(),
+            1: self._create_lapsrn(),
+            2: self._create_another_model(),
+            3: self._create_another_model(),
+            4: self._create_another_model(),
+            5: self._create_another_model()
+        }
+        self.time_stamp = time_stamp
+        self.current_time_stamp = 0
+        self.psnr_log = [0 for i in range(time_stamp)]
+        self.best_action = 0
+
+    def _create_edsr(self):
+        # Initialize an EDSR model with pre-trained weights
+        model = EDSR()
+        model.load_state_dict(torch.load("path/to/edsr_weights.pth"))
+        return model
 
     def reset(self):
         self.current_image = load_image()
         return self.current_image
 
     def step(self, action):
-        # Perform the action
-        new_image = perform_action(self.current_image, action)
-        self.current_image = new_image
+        super_res_img = self.models[action](input_img)
+        psnr = self._calculate_psnr(super_res_img)
+        self.psnr_log[self.current_time_stamp] = psnr
 
-        # Calculate the reward
-        reward = calculate_reward(self.current_image)
+        # Provide a reward based on the PSNR value
+        if psnr > 30:
+            reward = 1
+        else:
+            reward = 0
 
-        return self.current_image, reward, False, {}
+        self.current_time_stamp += 1
+        if self.current_time_stamp == self.time_stamp:
+            self.best_action = self.psnr_log.index(max(self.psnr_log))
+            return super_res_img, reward, True, {"best_action": self.best_action}
+        else:
+            return super_res_img, reward, False, {}
 
+    def _calculate_psnr(self, img):
+        # Calculate the PSNR of the image
+        pass
 
 # Define the agent
 class Agent(nn.Module):
