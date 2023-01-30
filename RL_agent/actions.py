@@ -12,8 +12,8 @@ import cv2
 os.environ['TFHUB_DOWNLOAD_PROGRESS'] = 'True'
 SAVED_MODEL_PATH = "https://tfhub.dev/captain-pool/esrgan-tf2/1"
 model = hub.load(SAVED_MODEL_PATH)
-out_folder="this is for saving output esrgan"
-
+out_folder="G:\\Gachon Masters\\pycharm\\reinforcement"
+img3="C:\\Users\\aashi\\PycharmProjects\\Unsupervised-Image-Super-Resolution\\HR\\0.png"
 # this pre-process is just for  action 2 esrgan
 def preprocess_image(img):
     '''Loads the image given make it ready for
@@ -22,7 +22,7 @@ def preprocess_image(img):
         image_path: Path to the image file
    '''
     image = tf.image.decode_image(tf.io.read_file(img))
-    if image.shape[-1] == 4:
+    if image.shape[-1] == 4:#for RGBA images
         image = image[..., :-1]
     size = (tf.convert_to_tensor(image.shape[:-1]) // 4) * 4
     image = tf.image.crop_to_bounding_box(image, 0, 0, size[0], size[1])
@@ -61,7 +61,7 @@ def action3(img_small, config):
     return comb2
 
 
-def action2(pre_processed_img, SAVED_MODEL_PATH, out_folder):
+def action2(pre_processed_img, SAVED_MODEL_PATH):
     model_new = hub.load(SAVED_MODEL_PATH)
     super_image = model_new(pre_processed_img)
     image = np.asarray(super_image)
@@ -71,14 +71,9 @@ def action2(pre_processed_img, SAVED_MODEL_PATH, out_folder):
 
     img = Image.fromarray(np.uint8(image))
 
-    folder_path = out_folder
-    file_path = os.path.join(folder_path, "esrgan_out.png")
-    img.save(file_path)
-    image = cv2.imread(file_path)
-    new_size = (384, 384)
-    resized_image = cv2.resize(image, new_size, interpolation=cv2.INTER_LINEAR)
-    cv2.imwrite(file_path, resized_image)
-    msg = print("esrgan Image saved")
-    return msg,resized_image
+    # msg = print("esrgan Image saved")
+    return img
 
 
+lr=preprocess_image(img3)
+hr=action2(lr,SAVED_MODEL_PATH)
