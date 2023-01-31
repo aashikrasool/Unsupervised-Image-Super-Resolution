@@ -11,7 +11,7 @@ img="D:\\research_pycharm\\reisr\\Unsupervised-Image-Super-Resolution\\output\\i
 
 def increase_bright(img):
     img = Image.open(img)
-    # Removed platform-dependent code
+
     # project_root = os.getcwd()
     # dir_dataset = config['data_dir']
     # files_img = [os.path.join(dir_dataset, x) for x in os.listdir(dir_dataset)]
