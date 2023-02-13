@@ -1,132 +1,121 @@
 import gym
+from gym import Env
+from gym.spaces import Discrete,Box,Dict,Tuple,MultiBinary,MultiDiscrete
 import numpy as np
-from PIL import Image
-import torch
-import torch.nn as nn
-import torch.optim as optim
-
+import random
+import os
+from stable_baselines3 import PPO
+from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3.common.evaluation import evaluate_policy
 import cv2
 
-import torch
+'''--------------------------------------------------------------------------------------------------------------
+--------------------------------Building own env--------------------------------------------------------------------
+--building agent to solve our issue
+'''
+img = cv2.imread("G:\\Gachon Masters\\pycharm\\reinforcement\\0upsampled.jpg")
+class SuperImg(Env):
 
-# Define the actions
-actions = [1, 2, 3, 4, 5, 6]
-
-
-
-
-
-def perform_action(image, action):
-    # Perform the action
-    if action == 1:
-        new_image =  # action 1
-    elif action == 2:
-        new_image =  # action 2
-    elif action == 3:
-        new_image =  # action 3
-    elif action == 4:
-        new_image =  # action 4
-    elif action == 5:
-        new_image =  # action 5
-    elif action == 6:
-        new_image =  # action 6
-    else:
-        new_image =  # action donothing
-    return new_image
-
-
-def load_image():
-    image_path = "path/to/image.jpg"
-    image = cv2.imread(image_path)
-    return image
-
-
-# Define the environment
-class ImageEnv(gym.Env):
-    def __init__(self, input_size=(384, 384, 3), time_stamp=5):
-        self.input_size = input_size
-        self.models = {
-            0: self._create_edsr(),
-            1: self._create_lapsrn(),
-            2: self._create_another_model(),
-            3: self._create_another_model(),
-            4: self._create_another_model(),
-            5: self._create_another_model()
-        }
-        self.time_stamp = time_stamp
-        self.current_time_stamp = 0
-        self.psnr_log = [0 for i in range(time_stamp)]
-        self.best_action = 0
-
-    def _create_edsr(self):
-        # Initialize an EDSR model with pre-trained weights
-        model = EDSR()
-        model.load_state_dict(torch.load("path/to/edsr_weights.pth"))
-        return model
-
-    def reset(self):
-        self.current_image = load_image()
-        return self.current_image
-
-    def step(self, action):
-        super_res_img = self.models[action](input_img)
-        psnr = self._calculate_psnr(super_res_img)
-        self.psnr_log[self.current_time_stamp] = psnr
-
-        # Provide a reward based on the PSNR value
-        if psnr > 30:
-            reward = 1
-        else:
-            reward = 0
-
-        self.current_time_stamp += 1
-        if self.current_time_stamp == self.time_stamp:
-            self.best_action = self.psnr_log.index(max(self.psnr_log))
-            return super_res_img, reward, True, {"best_action": self.best_action}
-        else:
-            return super_res_img, reward, False, {}
-
-    def _calculate_psnr(self, img):
-        # Calculate the PSNR of the image
-        pass
-
-# Define the agent
-class Agent(nn.Module):
     def __init__(self):
-        super(Agent, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, 3)
-        self.upsample1 = nn.Upsample(scale_factor=2)
-        self.conv2 = nn.Conv2d(32, 32, 3)
-        self.upsample2 = nn.Upsample(scale_factor=2)
-        self.conv3 = nn.Conv2d(32, 3, 3)
 
-    def forward(self, x):
-        x = self.conv1(x)
-        x = self.upsample1(x)
-        x = self.conv2(x)
-        x = self.upsample2(x)
-        x = self.conv3(x)
-        return x
+        self.action_space=Discrete(3)
+        self.observation_space = gym.spaces.Box(low=0, high=255, shape=(384,384,3), dtype=np.uint8)
+        self.state=cv2.imread("G:\\Gachon Masters\\pycharm\\reinforcement\\0upsampled.jpg")
+        self.img=cv2.imread("G:\\Gachon Masters\\pycharm\\reinforcement\\0upsampled.jpg")
+        self.models = {
+            0: self._create_action1(self.state),
+            1: self._create_action2(self.state),
+            2: self._create_action3(self.state)
+        }
+        self.process_length= 120
 
+    def step(self,action):
+        super_res_img = self.models[action](self.state)
+        psnr = self._calculate_psnr(super_res_img)
+        self.process_length -= 1
+        if self.psnr >35 and self.psnr <=49:
+            reward=1
+        else:
+            reward=-1
 
-model = Agent()
-optimizer = optim.Adam(model.parameters())
-loss_fn = nn.MSELoss()
+        if self.process_length <= 0:
+            done=True
+        else:
+            done=False
+        info = {}
 
-# Train the agent
-env = ImageEnv()
-for episode in range(num_episodes=10):
-    state = env.reset()
-    for step in range(num_steps=5):
-        action = model(torch.Tensor(state))
-        next_state, reward, done, _ = env.step(action)
-        optimizer.zero_grad()
-        loss = loss_fn(action, torch.Tensor(reward))
-        loss.backward()
-        optimizer.step()
-        state = next_state
+        return self.state,reward,done,info
 
-from stable_baselines3 import PPO
+    def get_upscaled_img(self,img_small, model_path, modelname, scale):
+        model_pretrained = cv2.dnn_superres.DnnSuperResImpl_create()
+        model_pretrained.readModel(model_path)
+        model_pretrained.setModel(modelname, scale)
+        img_upscaled = model_pretrained.upsample(img_small)
+        return img_upscaled
 
-model = PPO('CNN', ImageEnv, verbose=1)
-model.learn(total_timestamp=4000)
+    def per_matrix(self,img1, img2):
+        # MSE
+        heigt = 384
+        width = 384
+        diff = cv2.subtract(img1, img2)
+        err = np.sum(diff ** 2)
+        mse = err / (float(heigt * width))
+
+    def downsample(self,img_file, scale=0.3, plot=False):
+        img = cv2.imread(img_file, 1)
+        img_small = cv2.resize(img, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_NEAREST)
+        return img, img_small
+
+    def _create_action1(self,img):
+        img, img_small = self.downsample(img, 0.4)
+        # img_g = "C:\\Users\\aashi\\PycharmProjects\\Unsupervised-Image-Super-Resolution\\HR\\0.png"
+        modelName1, model_path1, _, _, _, _, scale = self.model_detail()
+        up_img = self.get_upscaled_img(img_small, model_path1, modelName1, scale)
+        # psnr = per_matrix(up_img, img_g)
+        return up_img
+
+    def build_hr(self,model_path, scale, modelname1, img_small):
+        model_pretrained = cv2.dnn_superres.DnnSuperResImpl_create()
+        print("Reading model file {}".format(model_path))
+        model_pretrained.readModel(model_path)
+        model1 = model_pretrained.setModel(modelname1, scale)
+
+        img_upscaled1 = model1.upsample(img_small)
+
+        return img_upscaled1
+
+    def model_detail(self):
+        model_path1 = "C:\\Users\\aashi\\PycharmProjects\\Unsupervised-Image-Super-Resolution\\pretrained_models\\EDSR_x4.pb"
+        model_path2 = "C:\\Users\\aashi\\PycharmProjects\\Unsupervised-Image-Super-Resolution\\pretrained_models\\ESPCN_x4.pb"
+        model_path3 = "C:\\Users\\aashi\\PycharmProjects\\Unsupervised-Image-Super-Resolution\\pretrained_models\\FSRCNN_x4.pb"
+        modelName1 = "edsr"
+        modelName2 = "espcn"
+        modelName3 = "fsrcnn"
+        scale = 4
+        return modelName1, model_path1, modelName2, model_path2, modelName3, model_path3, scale
+
+    def action2(self,img):
+        img, img_small = self.downsample(img, 0.4)
+        _, _, modelName2, model_path2, _, _, scale = self.model_detail()
+        up_img = self.get_upscaled_img(img_small, model_path2, modelName2, scale)
+
+        return up_img
+
+    def action3(self,img):
+        img, img_small = self.downsample(img, 0.4)
+        _, _, _, _, modelName3, model_path3, scale = self.model_detail()
+        up_img = self.get_upscaled_img(img_small, model_path3, modelName3, scale)
+        return up_img
+
+    def render(self):
+        pass
+    def reset(self):
+        # Reset the state of the environment
+        self.state = self.img
+        self.process_length=120
+
+        return self.state
+
+#print(gym.spaces.Box(low=0, high=255, shape=(3,384,384,), dtype=np.uint8))
+env= SuperImg()
+env.observation_space.sample()

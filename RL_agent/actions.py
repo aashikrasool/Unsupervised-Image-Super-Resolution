@@ -16,13 +16,9 @@ model = hub.load(SAVED_MODEL_PATH)
 
 # this pre-process is just for  action 2 esrgan
 def preprocess_image(img):
-    '''Loads the image given make it ready for
-      the model
-      Args:
-        image_path: Path to the image file
-   '''
+    # In here we were adding 1 for batch size
     image = tf.image.decode_image(tf.io.read_file(img))
-    if image.shape[-1] == 4:#for RGBA images
+    if image.shape[-1] == 4:     #for RGBA images
         image = image[..., :-1]
     size = (tf.convert_to_tensor(image.shape[:-1]) // 4) * 4
     image = tf.image.crop_to_bounding_box(image, 0, 0, size[0], size[1])
@@ -47,13 +43,15 @@ def build_hr(model_path, scale, modelname1, img_small):
     return img_upscaled1
 
 
-def action1(img_small, config):
+def action1(img_small, config,time_stamp):
     img_upscaled1 = build_hr(img_small, config['edsr_model'], "edsr", 4)
     img_upscaled2 = build_hr(img_small, config['espcn_model'], "espcn", 4)
     comb1 = cv2.addWeighted(img_upscaled1, 0.6, img_upscaled2, 0.4, 0.0)
+    cv2.imwrite(f"{time_stamp}action1.jpg", comb1)
     return comb1
 
 def action2(lr_img,SAVED_MODEL_PATH,time_stamp):
+
     out_folder="G:\\Gachon Masters\\pycharm\\reinforcement"
     pre_processed_img=preprocess_image(lr_img)
     model_new =hub.load(SAVED_MODEL_PATH)
@@ -71,10 +69,12 @@ def action2(lr_img,SAVED_MODEL_PATH,time_stamp):
     #msg=print("esrgan Image saved")
     return img
 
-def action3(img_small, config,):
+def action3(img_small, config,time_stamp):
+    out_folder=""
     img_upscaled1 = build_hr(img_small, config['lapsrn_model'], "lapsrn", 4)
     img_upscaled2 = build_hr(img_small, config['espcn_model'], "espcn", 4)
     comb2 = cv2.addWeighted(img_upscaled1, 0.6, img_upscaled2, 0.4, 0.0)
+    cv2.imwrite(f"{time_stamp}action3.jpg", comb2)
     return comb2
 
 def action4(img,time_stamp):
